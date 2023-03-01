@@ -30,16 +30,6 @@ class Program
         else
         {
             int[] result = new int[n];
-            //Console.Write("Danh sach dinh duyet qua: ");
-            //for (int i = 0; i <n; i++)
-            //{
-            //    if (visited[i])
-            //    {
-            //        Console.Write(path[i] + " ");
-            //    }
-            //}
-            //Console.WriteLine();
-
             int v = goal;
             int index = 0;
             while (v != start)
@@ -109,5 +99,58 @@ class Program
                 DFS(v);
             }
         }
+    }
+}
+
+
+public class Graph
+{
+    private int n;
+    private int[,] graph;
+
+    public Graph(int[,] graph, int n)
+    {
+        this.n = n;
+        this.graph = graph;
+    }
+
+    public List<int> BFS(int start, int goal)
+    {
+        bool[] visited = new bool[n];
+        Queue<int> queue = new Queue<int>();
+        List<int> path = new List<int>();
+
+        // Enqueue the start vertex and mark it as visited
+        queue.Enqueue(start);
+        visited[start] = true;
+
+        // Repeat until the queue is empty
+        while (queue.Count > 0)
+        {
+            // Dequeue a vertex from the queue
+            int current = queue.Dequeue();
+
+            // Add the vertex to the path
+            path.Add(current);
+
+            // If the current vertex is the goal, return the path
+            if (current == goal)
+            {
+                return path;
+            }
+
+            // Enqueue unvisited neighbors
+            for (int i = 0; i < n; i++)
+            {
+                if (adjacencyMatrix[current, i] == 1 && !visited[i])
+                {
+                    queue.Enqueue(i);
+                    visited[i] = true;
+                }
+            }
+        }
+
+        // No path was found
+        return null;
     }
 }

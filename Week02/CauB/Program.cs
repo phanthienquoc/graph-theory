@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 class Program
 {
@@ -10,103 +11,29 @@ class Program
 
     static void Main()
     {
-        StreamReader reader = new StreamReader("D:\\HCMUS\\LTDT\\Week02\\CauB\\input.txt");
-        int n = int.Parse(reader.ReadLine());
-        int start, goal;
-
-        // Đọc đỉnh nguồn và đỉnh đích
-        string[] line = reader.ReadLine().Split();
-        start = int.Parse(line[0]);
-        goal = int.Parse(line[1]);
-
-        // Đọc ma trận kề
-        int[,] matrix = new int[n, n];
-        for (int i = 0; i < n; i++)
+        ReadInputFromFile("D:\\HCMUS\\LTDT\\Week02\\CauB\\vd03.txt");
+        Graph caub = new Graph(n, graph);
+        List<int> path = caub.DFS(start, goal);
+        if (path != null)
         {
-            line = reader.ReadLine().Split();
-            for (int j = 0; j < n; j++)
-            {
-                matrix[i, j] = int.Parse(line[j]);
-            }
-        }
-
-        // Duyệt đồ thị theo chiều rộng để tìm đường đi từ start đến goal
-        List<int> visited = new List<int>();
-        Queue<int> queue = new Queue<int>();
-        int[] parent = new int[n];
-        bool[] visitedNodes = new bool[n];
-
-        visited.Add(start);
-        visitedNodes[start] = true;
-        queue.Enqueue(start);
-
-        while (queue.Count > 0)
-        {
-            int current = queue.Dequeue();
-            for (int i = 0; i < n; i++)
-            {
-                if (matrix[current, i] == 1 && !visitedNodes[i])
-                {
-                    visited.Add(i);
-                    visitedNodes[i] = true;
-                    parent[i] = current;
-                    queue.Enqueue(i);
-                }
-            }
-        }
-
-        // In ra danh sách đỉnh được viếng thăm
-        Console.WriteLine("Danh sach dinh duoc vieng tham:");
-        foreach (int vertex in visited)
-        {
-            Console.Write(vertex + " ");
-        }
-        Console.WriteLine();
-
-        // In ra đường đi từ start đến goal
-        if (visitedNodes[goal])
-        {
-            List<int> path = new List<int>();
-            int current = goal;
-            while (current != start)
-            {
-                path.Add(current);
-                current = parent[current];
-            }
-            path.Add(start);
-
-            Console.WriteLine("Duong di: ");
-            for (int i = path.Count - 1; i >= 0; i--)
-            {
-                Console.Write(path[i] + " ");
-            }
+            PrintResult(path);
         }
         else
         {
-            Console.WriteLine("Khong co duong di");
+            Console.WriteLine("No path found.");
         }
-
-        reader.Close();
     }
 
-    static void DFS(int v)
-    {
-        visited[v] = true;
-        Console.Write(v + " ");
-
-        if (v == goal)
+    static void PrintResult(List<int> result) {
+        List<int> data = new List<int>();
+        for(int i = result.Count-1; i >=0 ; i--)
         {
-            Console.WriteLine("\nTìm thấy đường đi từ start đến goal.");
-            return;
+            data.Add(result[i]);
         }
 
-        for (int i = 0; i < n; i++)
-        {
-            if (graph[v, i] == 1 && !visited[i])
-            {
-                DFS(i);
-            }
-        }
+        Console.WriteLine("Danh sach dinh da duyet theo thu tu: " + string.Join(" ", result));
+        Console.WriteLine("Duong di in kieu nguoc: " + string.Join(" <- ", data));
+
     }
 
     static void ReadInputFromFile(string fileName)
@@ -129,5 +56,98 @@ class Program
                 }
             }
         }
+    }
+}
+
+
+public class Graph
+{
+    private int n;
+    private int[,] graph;
+
+    public Graph( int n, int[,] graph)
+    {
+        this.n = n;
+        this.graph = graph;
+    }
+
+    public List<int> BFS(int start, int goal)
+    {
+        bool[] visited = new bool[n];
+        Queue<int> queue = new Queue<int>();
+        List<int> path = new List<int>();
+
+        // Enqueue the start vertex and mark it as visited
+        queue.Enqueue(start);
+        visited[start] = true;
+
+        // Repeat until the queue is empty
+        while (queue.Count > 0)
+        {
+            // Dequeue a vertex from the queue
+            int current = queue.Dequeue();
+
+            // Add the vertex to the path
+            path.Add(current);
+
+            // If the current vertex is the goal, return the path
+            if (current == goal)
+            {
+                return path;
+            }
+
+            // Enqueue unvisited neighbors
+            for (int i = 0; i < n; i++)
+            {
+                if (graph[current, i] == 1 && !visited[i])
+                {
+                    queue.Enqueue(i);
+                    visited[i] = true;
+                }
+            }
+        }
+
+        // No path was found
+        return null;
+    }
+
+    public List<int> DFS(int start, int goal)
+    {
+        bool[] visited = new bool[n];
+        Stack<int> stack = new Stack<int>();
+        List<int> path = new List<int>();
+
+        // Push the start vertex onto the stack and mark it as visited
+        stack.Push(start);
+        visited[start] = true;
+
+        // Repeat until the stack is empty
+        while (stack.Count > 0)
+        {
+            // Pop a vertex from the stack
+            int current = stack.Pop();
+
+            // Add the vertex to the path
+            path.Add(current);
+
+            // If the current vertex is the goal, return the path
+            if (current == goal)
+            {
+                return path;
+            }
+
+            // Push unvisited neighbors onto the stack
+            for (int i = n - 1; i >= 0; i--)
+            {
+                if (graph[current, i] == 1 && !visited[i])
+                {
+                    stack.Push(i);
+                    visited[i] = true;
+                }
+            }
+        }
+
+        // No path was found
+        return null;
     }
 }

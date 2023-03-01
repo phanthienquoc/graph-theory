@@ -1,0 +1,15 @@
+D:\HCMUS\LTDT\Week02\CauB\bin\Debug\net6.0\CauB.exe
+D:\HCMUS\LTDT\Week02\CauB\bin\Debug\net6.0\CauB.deps.json
+D:\HCMUS\LTDT\Week02\CauB\bin\Debug\net6.0\CauB.runtimeconfig.json
+D:\HCMUS\LTDT\Week02\CauB\bin\Debug\net6.0\CauB.dll
+D:\HCMUS\LTDT\Week02\CauB\bin\Debug\net6.0\CauB.pdb
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.csproj.AssemblyReference.cache
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.GeneratedMSBuildEditorConfig.editorconfig
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.AssemblyInfoInputs.cache
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.AssemblyInfo.cs
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.csproj.CoreCompileInputs.cache
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.dll
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\refint\CauB.dll
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.pdb
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\CauB.genruntimeconfig.cache
+D:\HCMUS\LTDT\Week02\CauB\obj\Debug\net6.0\ref\CauB.dll
