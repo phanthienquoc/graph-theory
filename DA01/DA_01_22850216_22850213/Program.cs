@@ -6,10 +6,10 @@ class Program
     static void Main(string[] args)
     {
         string[] testfiles = {
-            "D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\ibutterfly.txt",
-            //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\ibull.txt",
+            "D:\\PhanThienQuoc\\graph-theory\\DA01\\DA_01_22850216_22850213\\ibutterfly.txt",
+            "D:\\PhanThienQuoc\\graph-theory\\DA01\\DA_01_22850216_22850213\\ibull.txt",
             //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\iwagner.txt",
-            //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\iwheel.txt",
+            "D:\\PhanThienQuoc\\graph-theory\\DA01\\DA_01_22850216_22850213\\iwheel.txt",
             //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\istar.txt",
         };
 
@@ -27,9 +27,9 @@ class Program
 class Graph
 {
     private string fileName = "";
-    static int[,] graph;
-    static List<List<int>> adj = new List<List<int>>();
-    static int n;
+    public int[,] graph;
+    public List<List<int>> adj = new List<List<int>>();
+    public int n;
     public Graph(string inputFile)
     {
         fileName = inputFile;
@@ -41,10 +41,10 @@ class Graph
     {
         isNullGrah();
         isButterfly();
-        //isBull();
+        isBull();
         //isWagner();
         //isStar();
-        //isWheel();
+        isWheel();
         //isFriendShip();
         //isBipartite();
         //isKPartite();
@@ -64,6 +64,9 @@ class Graph
             {
                 adj[i].Add(int.Parse(s[k]));
             }
+
+            //Console.WriteLine(string.Join(" ", adj[i]));
+
         }
 
         reader.Close();
@@ -110,13 +113,62 @@ class Graph
 
     public void isBull()
     {
-        if (isEmptyGraph())
+        if (isEmptyGraph() || n != 5)
         {
             Console.WriteLine("Do thi bo tot: Khong");
         }
         else
         {
-            Console.WriteLine("Do thi bo tot: isBull");
+            bool hasC3Loop = false;
+            int vertices1 = 0;
+            int vertices3 = 0;
+            int vertex2 = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (adj[i].Count == 1)
+                {
+                    vertices1++;
+                }
+                if (adj[i].Count == 2)
+                {
+                    vertex2++;
+                }
+                if (adj[i].Count == 3)
+                {
+                    vertices3++;
+                }
+            }
+
+
+
+            // Loop through every pair of vertices
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i + 1; j < adj[i].Count; j++)
+                {
+                    // If vertices i and j are adjacent, check if there is a third vertex adjacent to both i and j
+                    if (adj[i].Contains(j + 1))
+                    {
+                        foreach (int k in adj[i])
+                        {
+                            if (k != j + 1 && adj[j].Contains(k) && k != i + 1)
+                            {
+                                hasC3Loop = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if (vertices1 == 2 & vertices3 == 2 & vertex2 == 1 )
+            {
+                Console.WriteLine("Do thi bo tot: Co");
+            }
+            else
+            {
+                Console.WriteLine("Do thi bo tot: Khong");
+            }
         }
     }
     public void isWagner()
@@ -188,45 +240,41 @@ class Graph
         }
         else
         {
-            bool isWheel = false;
-            int degreeSum = 0;
-            int hubDegree = 0;
+            bool isWheelGraph = false;
+            int degreeOfHub = 0;
+
+            // Kiểm tra xem có chính xác một đỉnh có bậc là n-1 hay không
             for (int i = 0; i < n; i++)
             {
-                int degree = 0;
-                for (int j = 0; j < n; j++)
+                if (adj[i].Count ==n - 1)
                 {
-                    if (graph[i, j] == 1)
-                    {
-                        degree++;
-                        degreeSum++;
-                    }
+                    degreeOfHub = i;
                 }
-                if (degree == n - 1)
+                else if (adj[i].Count != 3)
                 {
-                    hubDegree = degree;
-                }
-                else if (degree != 2)
-                {
-                    isWheel = false;
+                    isWheelGraph = false;
                 }
             }
-            if (!isWheel)
+
+            // Kiểm tra xem tất cả các đỉnh trong chu trình có kết nối với hub hay không
+            for (int i = 0; i < n; i++)
+            {
+                if (i != degreeOfHub && adj[i].Count != 2)
+                {
+                    if (!adj[i].Contains(degreeOfHub))
+                    {
+                        isWheelGraph = false;
+                    }
+
+                }
+            }
+
+            if(isWheelGraph) 
+            { 
+                Console.WriteLine("Do thi banh xe: Co");
+            } else
             {
                 Console.WriteLine("Do thi banh xe: Khong");
-
-            }
-            else
-            {
-                isWheel = degreeSum == 2 * (n - 1) && hubDegree == n - 1;
-                if (isWheel)
-                {
-                    Console.WriteLine("Do thi banh xe: isWheel");
-                }
-                else
-                {
-                    Console.WriteLine("Do thi banh xe: Khong");
-                }
             }
 
             //
