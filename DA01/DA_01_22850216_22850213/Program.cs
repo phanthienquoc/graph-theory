@@ -7,10 +7,10 @@ class Program
     {
         string[] testfiles = {
             "D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\ibutterfly.txt",
-            "D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\ibull.txt",
-            "D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\iwagner.txt",
-            "D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\iwheel.txt",
-            "D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\istar.txt",
+            //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\ibull.txt",
+            //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\iwagner.txt",
+            //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\iwheel.txt",
+            //"D:\\HCMUS\\LTDT\\DA01\\DA_01_22850216_22850213\\istar.txt",
         };
 
 
@@ -28,6 +28,7 @@ class Graph
 {
     private string fileName = "";
     static int[,] graph;
+    static List<List<int>> adj = new List<List<int>>();
     static int n;
     public Graph(string inputFile)
     {
@@ -40,39 +41,33 @@ class Graph
     {
         isNullGrah();
         isButterfly();
-        isBull();
-        isWagner();
-        isStar();
-        isWheel();
-        isFriendShip();
-        isBipartite();
-        isKPartite();
+        //isBull();
+        //isWagner();
+        //isStar();
+        //isWheel();
+        //isFriendShip();
+        //isBipartite();
+        //isKPartite();
     }
-
 
     public void ReadDataFromFile(string fileName)
     {
+
         StreamReader reader = new StreamReader(fileName);
-
-        // Doc so dinh
         n = int.Parse(reader.ReadLine());
-        Console.WriteLine(n);
-        string[] tokens;
 
-        // Doc ma tran ke
-        graph = new int[n, n];
         for (int i = 0; i < n; i++)
         {
-            tokens = reader.ReadLine().Split();
-            for (int j = 0; j < n; j++)
+            adj.Add(new List<int>());
+            string[] s = reader.ReadLine().Split(" ");
+            for (int k = 0; k < s.Length; k++)
             {
-                graph[i, j] = int.Parse(tokens[j]);
-                Console.Write(graph[i, j] + " ");
+                adj[i].Add(int.Parse(s[k]));
             }
-            Console.WriteLine();
         }
 
         reader.Close();
+
     }
 
     public void isNullGrah()
@@ -89,63 +84,27 @@ class Graph
 
     public void isButterfly()
     {
-        if (isEmptyGraph())
+        int vertex4 = 0;
+        int vertex2 = 0;
+        for (int i = 0; i < adj.Count; i++)
         {
-            Console.WriteLine("Do thi canh buom: Khong");
-        }
-
-        int[] degree = new int[n];
-
-        // Tính bậc của mỗi đỉnh trong đồ thị
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
+            if (adj[i].Count == 4)
             {
-                degree[i] += graph[i, j];
+                vertex4++;
+            }
+            if (adj[i].Count == 2)
+            {
+                vertex2++;
             }
         }
 
-        bool isButterflyGraph = true;
-
-        // Kiểm tra xem đồ thị có phải là đồ thị cánh bướm hay không
-        for (int i = 0; i < n; i++)
+        if (vertex2 == 4 & vertex4 == 1)
         {
-            if (degree[i] == 3)
-            {
-                for (int j = i + 1; j < n; j++)
-                {
-                    if (degree[j] == 3 && graph[i, j] == 1)
-                    {
-                        int count = 0;
-                        for (int k = 0; k < n; k++)
-                        {
-                            if (graph[i, k] == 1 && graph[j, k] == 1)
-                            {
-                                count++;
-                            }
-                        }
-
-                        if (count != 2)
-                        {
-                            isButterflyGraph = false;
-                        }
-                    }
-                }
-            }
-            else if (degree[i] != 2)
-            {
-                isButterflyGraph = false;
-            }
-        }
-
-        // In kết quả
-        if (isButterflyGraph)
-        {
-            Console.WriteLine("Do thi canh buom: Co");
+            Console.WriteLine("Do thi hinh buom: Co");
         }
         else
         {
-            Console.WriteLine("Do thi canh buom: Khong");
+            Console.WriteLine("Do thi hinh buom: Khong");
         }
     }
 
@@ -336,17 +295,6 @@ class Graph
 
     public bool isEmptyGraph()
     {
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (graph[i, j] != 0)
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return n == 0;
     }
 }

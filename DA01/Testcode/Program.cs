@@ -1,73 +1,32 @@
 ﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
 
 class Graph
 {
-    private int V; // number of vertices
-    private int[,] adj; // adjacency matrix
+    static List<List<int>> adj = new List<List<int>>();
 
-    public Graph(int v)
-    {
-        V = v;
-        adj = new int[V, V];
-    }
-
-    // function to add an edge to the graph
-    public void AddEdge(int u, int v)
-    {
-        adj[u, v] = 1;
-        adj[v, u] = 1;
-    }
-
-    // function to check if the graph is bipartite
-    public bool IsBipartite()
-    {
-        int[] color = new int[n];
-        for (int i = 0; i < n; i++)
-            color[i] = -1;
-
-        color[0] = 1;
-
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = i + 1; j < n; j++)
-            {
-                if (graph[i, j] == 1 && color[i] == color[j])
-                    return false;
-            }
-
-            if (i + 1 < n && color[i + 1] == -1)
-                color[i + 1] = 1 - color[i];
-        }
-
-        return true;
-    }
-}
-
-class Program
-{
     static void Main(string[] args)
     {
-        int[,] input = new int[,] {
-            {0, 1, 1, 1, 1},
-            {1, 0, 0, 0, 0},
-            {1, 0, 0, 0, 0},
-            {1, 0, 0, 0, 0},
-            {1, 0, 0, 0, 0}
-        };
+        StreamReader reader = new StreamReader("D:\\HCMUS\\LTDT\\DA01\\Testcode\\ibutterfly.txt");
+        int n = int.Parse(reader.ReadLine());
+        Console.WriteLine(n);
 
-        Graph g = new Graph(5);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < n; i++)
         {
-            for (int j = i + 1; j < 5; j++)
+            adj.Add(new List<int>());
+            string[] s = reader.ReadLine().Split(" ");
+            for (int k = 0; k < s.Length; k++)
             {
-                if (input[i, j] == 1)
-                    g.AddEdge(i, j);
+                adj[i].Add(int.Parse(s[k]));
             }
         }
 
-        if (g.IsBipartite())
-            Console.WriteLine("The graph is bipartite.");
-        else
-            Console.WriteLine("The graph is not bipartite.");
+        reader.Close();
+
+
     }
+
+   
 }
